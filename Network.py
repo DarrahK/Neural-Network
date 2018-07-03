@@ -39,7 +39,7 @@ class Network:
             for i in range(size):
                 my_file.writelines(", " + str(self.weights[layer][i]) + " ")
 
-    def feedForward(self, a_data):
+    def feedForward(self, a_data,write = True):
         """
         This feeds the A_data through the neural network.
         """
@@ -52,30 +52,25 @@ class Network:
         for x in range(self.layers - 1):
             self.zs.append(np.add(np.dot(self.weights[x], self.nodes[x]), self.biases[x]))
             self.nodes.append(sigmoid(np.add(np.dot(self.weights[x], self.nodes[x]), self.biases[x])))
-        # Collecting node data
-        my_file = open("Starting Data.csv", "a")
-        my_file.write("\nNodes")
-        for layer in range(self.layers):
-            # Reshaping data
-            B = np.reshape(self.nodes[layer], (1, (np.shape(self.nodes[layer])[0])))
-            my_file.writelines(", " + str(B[0]) + " ")
-        return
+        if write:
+            # Collecting node data
+            my_file = open("Starting Data.csv", "a")
+            my_file.write("\nNodes")
+            for layer in range(self.layers):
+                # Reshaping data
+                B = np.reshape(self.nodes[layer], (1, (np.shape(self.nodes[layer])[0])))
+                my_file.writelines(", " + str(B[0]) + " ")
+            return
 
     def back_prop(self, x, y):
-        """
-        Applies back propagation for a given input x and the correct output y.
-        """
-        # Feeds forward the x into the network
-        self.feedForward(x)
+        self.feedForward(x,False)
         y_tran = np.matrix(y).transpose()
         delta = np.multiply(cost_prime(self, y_tran), sigmoid_prime(self.zs[-1]))
-        # A deep copy of the starting weights and biases
         biases_copy = copy.deepcopy(self.biases)
         weights_copy = copy.deepcopy(self.weights)
         biases_copy[-1] = delta
         nodes_2 = np.matrix(self.nodes[-2])
         weights_copy[-1] = np.dot(delta, nodes_2.transpose())
-        # Applies  back propagation to the rest of the given
         for back in range(1, self.layers - 1):
             weight = np.matrix(self.weights[-back])
             delta = np.multiply(np.dot(weight, delta), sigmoid_prime(self.zs[-back-1]))
@@ -103,15 +98,22 @@ def sigmoid_prime(x):
 
 def costFunction(network, correct_data):
     """
-    Works for out the cost function.
+    Works for out the cost function
     """
     return np.sum(np.square(np.subtract(network.nodes[network.layers - 1], correct_data)))
 
 def cost_prime(self, y):
-    """
-    The prime of the cost function.
-    """
     return np.subtract(self.nodes[-1], y)
+
+A = Network([1,6,1])
+A.feedForward([.1])
+print(A.nodes[-1])
+A.feedForward([.5])
+print(A.nodes[-1])
+A.feedForward([0.0001])
+print(A.nodes[-1])
+A.feedForward([1000])
+print(A.nodes[-1])
 
 
 
