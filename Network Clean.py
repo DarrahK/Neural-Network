@@ -20,23 +20,6 @@ class Network:
         self.biases = [np.random.randn(x, 1) for x in sizes[1:]]
         self.weights = [np.random.randn(x, y) for x, y in zip(sizes[1:], sizes[:-1])]
 
-        # Collecting structure data.
-        my_file = open("Starting Data.csv", "w")
-        my_file.write("Network structure")
-        for size in self.sizes:
-            my_file.writelines( ", " + str(size) + " ")
-        # Collecting baises.
-        my_file.write("\nBaises")
-        for layer in range(self.layers-1):
-            # Reshaping data
-            B = np.reshape(self.biases[layer], (1, (np.shape(self.biases[layer])[0])))
-            my_file.writelines(", " + str(B[0]) + " ")
-        # Collecting weights
-        for layer in range(self.layers-1):
-            my_file.write("\nWeights for layer " + str(layer))
-            size = self.sizes[layer + 1]
-            for i in range(size):
-                my_file.writelines(", " + str(self.weights[layer][i]) + " ")
 
     def feedForward(self, a_data,write = True):
         """
@@ -46,21 +29,11 @@ class Network:
         self.a_data = []
         self.nodes = []
         self.zs = []
-        B = np.matrix(a_data)
-        self.a_data = np.reshape(B, (np.shape(B)[1], 1))
+        self.a_data = np.matrix(a_data).transpose
         self.nodes.append(self.a_data)
         for x in range(self.layers - 1):
-            self.zs.append(np.add(np.dot(self.weights[x], self.nodes[x]), self.biases[x]))
-            self.nodes.append(sigmoid(np.add(np.dot(self.weights[x], self.nodes[x]), self.biases[x])))
-        if write:
-            # Collecting node data
-            my_file = open("Starting Data.csv", "a")
-            my_file.write("\nNodes")
-            for layer in range(self.layers):
-                # Reshaping data
-                B = np.reshape(self.nodes[layer], (1, (np.shape(self.nodes[layer])[0])))
-                my_file.writelines(", " + str(B[0]) + " ")
-            return
+            self.zs.append(self.weights[x]*self.nodes[x]) + self.biases[x])
+            self.nodes.append(self.zs[x])
 
     def back_prop(self, x, y):
         self.feedForward(x,False)
