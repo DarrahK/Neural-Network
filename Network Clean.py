@@ -21,7 +21,7 @@ class Network:
         self.weights = [np.random.randn(x, y) for x, y in zip(sizes[1:], sizes[:-1])]
 
 
-    def feedForward(self, a_data,write = True):
+    def feed_forward(self, a_data):
         """
         This feeds the A_data through the neural network.
         """
@@ -29,16 +29,16 @@ class Network:
         self.a_data = []
         self.nodes = []
         self.zs = []
-        self.a_data = np.matrix(a_data).transpose
+        self.a_data = np.matrix(a_data).transpose()
         self.nodes.append(self.a_data)
         for x in range(self.layers - 1):
-            self.zs.append(self.weights[x]*self.nodes[x]) + self.biases[x])
-            self.nodes.append(self.zs[x])
+            self.zs.append(np.add(np.dot(self.weights[x], self.nodes[x]), self.biases[x]))
+            self.nodes.append(sigmoid(self.zs[x]))
 
     def back_prop(self, x, y):
-        self.feedForward(x,False)
+        self.feed_forward(x)
         y_tran = np.matrix(y).transpose()
-        delta = np.multiply(cost_prime(self, y_tran), sigmoid_prime(self.zs[-1]))
+        delta = np.multiply(cost(self, y_tran), sigmoid(self.zs[-1],True), True)
         biases_copy = copy.deepcopy(self.biases)
         weights_copy = copy.deepcopy(self.weights)
         biases_copy[-1] = delta
@@ -46,7 +46,7 @@ class Network:
         weights_copy[-1] = np.dot(delta, nodes_2.transpose())
         for back in range(1, self.layers - 1):
             weight = np.matrix(self.weights[-back])
-            delta = np.multiply(np.dot(weight, delta), sigmoid_prime(self.zs[-back-1]))
+            delta = np.multiply(np.dot(weight, delta), sigmoid(self.zs[-back-1]), True)
             biases_copy[-back] = delta
             nodes = np.matrix(self.nodes[-back-1])
             weights_copy[-back] = np.dot(delta, nodes.transpose())
@@ -54,39 +54,24 @@ class Network:
         return biases_copy, weights_copy
 
 
-def sigmoid(x):
+# Other functions that are needed.
+def sigmoid(x, prime=False):
     """
     Sigmoid function for a matrix applied to every element.
     """
+    if prime:
+        return np.dot(sigmoid(x),(1-sigmoid(x,)))
     x = np.matrix(x)
     return 1 / (1 + np.exp(-x))
 
-def sigmoid_prime(x):
-    """
-    Sigmoid prime function for a matrix applied to every element.
-    """
-    x = np.matrix(x)
-    out = np.multiply(sigmoid(x),(1-sigmoid(x)))
-    return out
-
-def costFunction(network, correct_data):
+def cost(network, correct_data,prime = False):
     """
     Works for out the cost function
     """
+    if prime:
+        return np.subtract(network.nodes[-1], correct_data)
     return np.sum(np.square(np.subtract(network.nodes[network.layers - 1], correct_data)))
 
-def cost_prime(self, y):
-    return np.subtract(self.nodes[-1], y)
-
-A = Network([1,6,1])
-A.feedForward([.1])
-print(A.nodes[-1])
-A.feedForward([.5])
-print(A.nodes[-1])
-A.feedForward([0.0001])
-print(A.nodes[-1])
-A.feedForward([1000])
-print(A.nodes[-1])
 
 
 
