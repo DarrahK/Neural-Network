@@ -1,9 +1,4 @@
 
-# Standard lib
-import random
-import csv
-import copy
-
 # External lib
 import numpy as np
 
@@ -20,7 +15,6 @@ class Network:
         self.biases = [np.random.randn(x, 1) for x in sizes[1:]]
         self.weights = [np.random.randn(x, y) for x, y in zip(sizes[1:], sizes[:-1])]
 
-
     def feed_forward(self, a_data):
         """
         This feeds the A_data through the neural network.
@@ -36,14 +30,17 @@ class Network:
             self.nodes.append(sigmoid(self.zs[x]))
 
     def back_prop(self, x, y):
+        # Feeding the data forward so we can calculate back propagation using the correct values.
         self.feed_forward(x)
+        # Working out the first propagation.
         y_tran = np.matrix(y).transpose()
-        delta = np.multiply(cost(self, y_tran), sigmoid(self.zs[-1],True), True)
-        biases_copy = copy.deepcopy(self.biases)
-        weights_copy = copy.deepcopy(self.weights)
+        delta = np.multiply(cost(self, y_tran), sigmoid(self.zs[-1], True), True)
+        biases_copy = self.biases
+        weights_copy = self.weights
         biases_copy[-1] = delta
         nodes_2 = np.matrix(self.nodes[-2])
         weights_copy[-1] = np.dot(delta, nodes_2.transpose())
+        # Applying back propagation to the rest of the nodes.
         for back in range(1, self.layers - 1):
             weight = np.matrix(self.weights[-back])
             delta = np.multiply(np.dot(weight, delta), sigmoid(self.zs[-back-1]), True)
@@ -53,25 +50,55 @@ class Network:
 
         return biases_copy, weights_copy
 
+    def collect_start(self):
+        """ Collects the network structure, biases, and weights of the network.
+        """
+        with open("Starting Data.csv", "w") as f:
+            f.write("Network structure, " + ", ".join(str(size) for size in self.sizes) + "\n")
+            f.write("Biases, " + ", ".join(str(biases.transpose()[0]) for biases in  self.biases) )
+            for layer in range(self.layers - 1):
+                f.write("\nWeights for layer " + str(layer) + ", "
+                        + ", ".join(str(self.weights[layer][i]) for i in range(self.sizes[layer] + 1)))
+            f.close()
+
+    def collect_all(self):
+        """ Collects all the data from the network structure.
+        """
+        with open("All Data.csv", "w") as f:
+            f.write("Network structure, " + ", ".join(str(size) for size in self.sizes) + "\n")
+            f.write("Biases, " + ", ".join(str(biases.transpose()[0]) for biases in self.biases))
+            for layer in range(self.layers - 1):
+                f.write("\nWeights for layer " + str(layer) + ", "
+                        + ", ".join(str(self.weights[layer][i]) for i in range(self.sizes[layer] + 1)))
+            # WHY IS THE MATRIX INSIDE A LIST?!
+            f.write("\nNodes, " + ", ".join(str(node.transpose()) for node in self.nodes))
+            f.close()
+
 
 # Other functions that are needed.
 def sigmoid(x, prime=False):
     """
     Sigmoid function for a matrix applied to every element.
     """
-    if prime:
-        return np.dot(sigmoid(x),(1-sigmoid(x,)))
     x = np.matrix(x)
+    if prime:
+        return np.dot(sigmoid(x),(1-sigmoid(x)))
     return 1 / (1 + np.exp(-x))
 
-def cost(network, correct_data,prime = False):
+
+def cost(self, correct_data, prime = False):
     """
     Works for out the cost function
     """
     if prime:
-        return np.subtract(network.nodes[-1], correct_data)
-    return np.sum(np.square(np.subtract(network.nodes[network.layers - 1], correct_data)))
+        return np.subtract(self.nodes[-1], correct_data)
+    return np.sum(np.square(np.subtract(self.nodes[self.layers - 1], correct_data)))
 
 
-
+A = Network([1,2,3])
+A.feed_forward([1])
+print(A.nodes[0])
+print(A.nodes)
+A.collect_start()
+A.collect_all()
 

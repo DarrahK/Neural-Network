@@ -1,6 +1,5 @@
 
 # Standard lib
-import random
 import csv
 import copy
 
@@ -63,7 +62,7 @@ class Network:
             return
 
     def back_prop(self, x, y):
-        self.feedForward(x,False)
+        self.feedForward(x, False)
         y_tran = np.matrix(y).transpose()
         delta = np.multiply(cost_prime(self, y_tran), sigmoid_prime(self.zs[-1]))
         biases_copy = copy.deepcopy(self.biases)
