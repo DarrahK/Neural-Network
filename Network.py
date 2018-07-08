@@ -1,3 +1,5 @@
+# --- Neural Network ---
+
 
 # External lib
 import numpy as np
@@ -103,12 +105,4 @@ def cost(self, correct_data, prime=False):
     if prime:
         return 2 * np.subtract(self.nodes[-1], correct_data)
     return np.sum(np.square(np.subtract(self.nodes[self.layers - 1], correct_data)))
-
-if __name__ == "__main__":
-    "This is used for testing of the Network and has nothing to do with the networks functionality."
-    A = Network([2,3,1])
-    A.feed_forward([1,2])
-    print(A.weights)
-    print(A.biases)
-    print(A.nodes)
 
