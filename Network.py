@@ -1,6 +1,7 @@
 
 # External lib
 import numpy as np
+import copy
 
 
 class Network:
@@ -40,19 +41,19 @@ class Network:
         self.feed_forward(x)
         # Working out the first propagation.
         y_tran = np.matrix(y).transpose()
-        delta = np.multiply(cost(self, y_tran), sigmoid(self.zs[-1], True), True)
-        biases_copy = self.biases
-        weights_copy = self.weights
+        delta = np.multiply(cost(self, y_tran, True), sigmoid(self.zs[-1], True))
+        biases_copy = [np.ones(b.shape) for b in self.biases]
+        weights_copy = [np.ones(w.shape) for w in self.weights]
         biases_copy[-1] = delta
         nodes_2 = np.matrix(self.nodes[-2])
         weights_copy[-1] = np.dot(delta, nodes_2.transpose())
         # Applying back propagation to the rest of the nodes.
         for back in range(1, self.layers - 1):
             weight = np.matrix(self.weights[-back])
-            delta = np.multiply(np.dot(weight, delta), sigmoid(self.zs[-back-1]), True)
-            biases_copy[-back] = delta
-            nodes = np.matrix(self.nodes[-back-1])
-            weights_copy[-back] = np.dot(delta, nodes.transpose())
+            delta = np.multiply(np.dot(weight.transpose(), delta), sigmoid(self.zs[-back-1], True))
+            biases_copy[-back-1] = delta
+            nodes = np.matrix(self.nodes[-back-2])
+            weights_copy[-back-1] = np.dot(delta, nodes.transpose())
 
         return biases_copy, weights_copy
 
@@ -88,7 +89,7 @@ def sigmoid(x, prime=False):
     :return: This will return a np.matrix of sigmoid/sigmoid prime function applied to every element of the np.matrix.
     """
     if prime:
-        return np.dot(sigmoid(x),(1-sigmoid(x)))
+        return np.multiply(sigmoid(x), (1-sigmoid(x)))
     return 1 / (1 + np.exp(-x))
 
 
@@ -105,10 +106,9 @@ def cost(self, correct_data, prime=False):
 
 if __name__ == "__main__":
     "This is used for testing of the Network and has nothing to do with the networks functionality."
-    A = Network([1,2,3])
-    A.feed_forward([1])
-    print(A.nodes[0])
+    A = Network([2,3,1])
+    A.feed_forward([1,2])
+    print(A.weights)
+    print(A.biases)
     print(A.nodes)
-    A.collect_start()
-    A.collect_all()
 
