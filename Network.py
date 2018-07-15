@@ -1,3 +1,5 @@
+# --- Neural Network ---
+
 
 # External lib
 import numpy as np
@@ -103,6 +105,7 @@ def cost(self, correct_data, prime=False):
         return 2 * np.subtract(self.nodes[-1], correct_data)
     return np.sum(np.square(np.subtract(self.nodes[self.layers - 1], correct_data)))
 
+<<<<<<< HEAD
 if __name__ == "__main__":
     "This is used for testing of the Network and has nothing to do with the networks functionality."
     A = Network([2,3,1])
@@ -112,3 +115,5 @@ if __name__ == "__main__":
     print(A.nodes)
     A.back_prop([1,2],[1])
 
+=======
+>>>>>>> 019f9c0084b93b9c0a9bf5a6b4884b370e960df8
