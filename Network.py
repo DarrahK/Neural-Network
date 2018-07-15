@@ -1,7 +1,6 @@
 
 # External lib
 import numpy as np
-import copy
 
 
 class Network:
@@ -42,8 +41,8 @@ class Network:
         # Working out the first propagation.
         y_tran = np.matrix(y).transpose()
         delta = np.multiply(cost(self, y_tran, True), sigmoid(self.zs[-1], True))
-        biases_copy = [np.ones(b.shape) for b in self.biases]
-        weights_copy = [np.ones(w.shape) for w in self.weights]
+        biases_copy = np.copy(self.biases)
+        weights_copy = np.copy(self.weights)
         biases_copy[-1] = delta
         nodes_2 = np.matrix(self.nodes[-2])
         weights_copy[-1] = np.dot(delta, nodes_2.transpose())
@@ -111,4 +110,5 @@ if __name__ == "__main__":
     print(A.weights)
     print(A.biases)
     print(A.nodes)
+    A.back_prop([1,2],[1])
 
