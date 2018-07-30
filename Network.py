@@ -4,8 +4,6 @@
 # External lib
 import numpy as np
 
-# TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-np.random.seed(0)
 
 class Network:
 
@@ -86,4 +84,10 @@ def cost(output, correct_data, prime=False):
     return np.sum(np.square(np.subtract(output, correct_data)))
 
 
+if __name__ == "__main__":
+    "This is used for testing of the Network and has nothing to do with the networks functionality."
+    A = Network([3,3,2])
+    A.feed_forward([1,2,3])
+    print(A.weights)
+    print(A.biases)
 
