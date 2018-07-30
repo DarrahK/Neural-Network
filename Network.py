@@ -4,8 +4,6 @@
 # External lib
 import numpy as np
 
-# TESTING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-np.random.seed(0)
 
 class Network:
 
