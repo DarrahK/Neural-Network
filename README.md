@@ -8,7 +8,7 @@ The aim was to build to able to have the user have more control over the the Neu
 Still in the early stages because of other commitments.
 
 ## Creating a Neural Network
-as I have stated there is two ways to build a network modularly or on initiation. In both examples we will be creating A Nearul etwork with 3 inputs, 1 hidden layer of with 4 nodes, and 2 output nodes. We will use the notation [3, 4, 2] to express this Neural Network
+as I have stated there is two ways to build a network modularly or on initiation. In both examples we will be creating A Nearul Network with 3 inputs, 1 hidden layer of with 4 nodes, and 2 output nodes. We will use the notation [3, 4, 2] to express this Network.
 
 ### Modular Network
 ```
@@ -22,3 +22,7 @@ This creates a network with 3 inputs, 1 hidden layer of with 4 nodes, and 2 outp
 ```
   Network = Network([3, 4, 2])
 ```
+
+
+## P.S.
+This my first ever project and I learnt Python 2 months ago. Please be nice. <3
