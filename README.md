@@ -1,8 +1,9 @@
 # neural-network-1.0
-Network.py was my first attempted of coding a Neural Network and still working 
+Network.py was my first attempted of coding a Neural Network and still working. 
 
 # neural-network-2.0
-The aim was to build to able to have the user have more control over the the Neural Network. This was done by adding modularity to the building of the Network. However I have also added a faster way to build a network if required.
+The aim was to build to able to have the user have more control over the the Neural Network and allow beginners to machine learning to have an appication that they can use to learn and experiment. In each section there will be an explanation of what each parts of the network to get begineers t
+This was done by adding modularity to the building of the Network. However I have also added a faster way to build a network if required.
 
 ## Current State of the project
 Still in the early stages because of other commitments.
@@ -23,6 +24,7 @@ This creates a network with 3 inputs, 1 hidden layer of with 4 nodes, and 2 outp
   Network = Network([3, 4, 2])
 ```
 
+## More customisation of the network.
 
 ## P.S.
 This my first ever project and I learnt Python 2 months ago. Please be nice. <3
