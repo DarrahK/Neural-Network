@@ -11,6 +11,17 @@ Still in the early stages because of other commitments.
 ## Creating a Neural Network
 as I have stated there is two ways to build a network modularly or on initiation. In both examples we will be creating A Nearul Network with 3 inputs, 1 hidden layer of with 4 nodes, and 2 output nodes. We will use the notation [3, 4, 2] to express this Network.
 
+
+
+### Initiations Network
+```
+  Network = Network([3, 4, 2])
+```
+## Built With
+* [NumPy](http://www.numpy.org/) - The maths framework used
+
+
+## More customisation of the network.
 ### Modular Network
 ```
   Network = Network(3)
@@ -19,12 +30,6 @@ as I have stated there is two ways to build a network modularly or on initiation
 ```
 This creates a network with 3 inputs, 1 hidden layer of with 4 nodes, and 2 output nodes. We will use the notation [3, 4, 2] to express this Neural Network. As you can see we have used different activation function for each layer this allows the user to have more control over the network and can work with different combinations to achieve different results.
 
-### Initiations Network
-```
-  Network = Network([3, 4, 2])
-```
-
-## More customisation of the network.
 
 ## P.S.
 This my first ever project and I learnt Python 2 months ago. Please be nice. <3
