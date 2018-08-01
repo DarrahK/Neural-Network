@@ -7,11 +7,18 @@ The aim was to build to able to have the user have more control over the the Neu
 ## Current State of the project
 Still in the early stages because of other commitments.
 
-## Building a Network
-To build a modular Network.
+## Creating a Neural Network
+as I have stated there is two ways to build a network modularly or on initiation. In both examples we will be creating A Nearul etwork with 3 inputs, 1 hidden layer of with 4 nodes, and 2 output nodes. We will use the notation [3, 4, 2] to express this Neural Network
+
+### Modular Network
 ```
   Network = Network(3)
-  Network.add_layer(4, "RelU")
+  Network.add_layer(4, "RPeLU", 5)
   Network.add_layer(2, "ArcTan")
 ```
-This creates a network with 3 inputs, 1 hidden layer of with 4 nodes, and 2 output nodes. We will use the notation [3, 4, 2] to express the network 
+This creates a network with 3 inputs, 1 hidden layer of with 4 nodes, and 2 output nodes. We will use the notation [3, 4, 2] to express this Neural Network. As you can see we have used different activation function for each layer this allows the user to have more control over the network and can work with different combinations to achieve different results.
+
+### Initiations Network
+```
+  Network = Network([3, 4, 2])
+```
