@@ -48,16 +48,36 @@ Parameters:
   # This will add another layer with 4 nodes to the Network with the RPeLU activation function.
   network.add_layer(4, "RPelU", 0.3)
 ```
-* change_input_layers
+* change_layer
   * Parrameters:
-    * Nodes - type int. 
+    * layer - type int. The layer that you want to change " remember the layers start from 0 "
+    * numbers_of_nodes - type int. The number of nodes you want on that layer.
   * Functionality:
-    This method changes how many
+    This method changes how many nodes are on a layer.
 ```
-  # This will add another layer with 3 nodes to the Network with the default Sigmoid activation function.
-  network.add_layer(3)
-  # This will add another layer with 4 nodes to the Network with the RPeLU activation function.
-  network.add_layer(4, "RPelU", 0.3)
+  # This will change the second layer nodes to 5.
+  network.change_layer(1, 5)
+```
+* feed_forward
+  * Parrameters:
+    * input_data - type array. This is the input that you want to feed into the Network.
+    * output - type Bool: Default False. If output is True it will output the output layer as a NumPy matrix object.
+  * Functionality:
+    This method will feed the given array into the Network by feedforward algorithm.
+```
+  # This will feed forward the array [1, 1, 1] into the Network.
+  network.feed_forward([1, 1, 1])
+```
+* back_prop
+  * Parrameters:
+    * x - type array. This is the given input for the Network so we can feed it forward.
+    * y - type array. This is the correct output for the given input so we can apply backpropagation.
+    * update - type Bool: Default False. If update is set to True it will update the weights and biases of the Network.
+  * Functionality:
+    This method will feed the given array into the Network by feedforward algorithm.
+```
+  # This will apply back propigation to the Network.
+  network.back_prop([1, 1, 1], [1, 0])
 ```
 
 ## Built With
