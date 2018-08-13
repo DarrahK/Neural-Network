@@ -80,9 +80,6 @@ network.feed_forward([1, 1, 1])
 network.back_prop([1, 1, 1], [1, 0])
 ```
 
-## Built With
-* [NumPy](http://www.numpy.org/) - The maths framework used
-
 ## Activation functions:
 * [Sigmoid](https://en.wikipedia.org/wiki/Sigmoid_function)
 * [Tanh](http://reference.wolfram.com/language/ref/Tanh.html)
@@ -110,6 +107,8 @@ network = Network([3, 4, 2], "Tanh")
 ```
 This creates a [3, 4, 2] Network with differnt activation function for each layer this allows the user to have more control over the network and can work with different combinations to achieve different results.
 
+## Built With
+* [NumPy](http://www.numpy.org/) - The maths framework used
 
 ## P.S.
 This my first ever project and I learnt Python 2 months ago. Please be nice. <3
