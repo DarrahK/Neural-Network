@@ -18,11 +18,11 @@ We will use the notation [3, 4, 2] to express this Network. Where the 3 is the i
 
 ### Initiations A Network Class
 Parameters:
-* layer_s - Array or Int. If an array is passed it will built a network with the desired layers in the array. If an Int is passed it will build a network only consisting of an input node layer.
-* act_function - Default Sigmoid. If the user has a preference on the activation function it will use the given activation function for each layer of the network. 
-* a - Default None. If the activation function requires an a value like RPeLU Or ELU you can pass the a value in initations.
+* layer_s - tpye Array or Int. If an array is passed it will built a network with the desired layers in the array. If an Int is passed it will build a network only consisting of an input node layer.
+* act_function - Type string: Default "Sigmoid". If the user has a preference on the activation function it will use the given activation function for each layer of the network. 
+* a - type int: Default None. If the activation function requires an a value like RPeLU Or ELU you can pass the a value in initations.
 
-### Examples of Initiations of a Network.
+ ### Examples of Initiations of a Network.
 
 ```
   # Initiations using an array to build a Neural network using Tanh as the activation function.
@@ -34,9 +34,25 @@ Parameters:
   network = Network(3)
 ```
 
+### Methods
+* add_layer
+  * Parrameters:
+    * Nodes - type int. 
+    * activations - type string: Default "Sigmoid". The activation function to be associated with that layer.
+    * a - type int: Default None. If the activation function requires an a value like RPeLU Or ELU.
+  * Functionality:
+    This function adds an another layer to the Neural Network with thee activation function specified.
+```
+  # This will add another layer with 3 nodes to the Network with the default Sigmoid activation function.
+  network.add_layer(3)
+  # This will add another layer with 4 nodes to the Network with the RPeLU activation function.
+  network.add_layer(4, "RPelU", 0.3)
+```
+
 ## Built With
 * [NumPy](http://www.numpy.org/) - The maths framework used
 
+### Activation functions:
 
 
 ## More customisation of the network.
