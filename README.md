@@ -18,9 +18,9 @@ We will use the notation [3, 4, 2] to express this Network. Where the 3 is the i
 
 ### Initiations A Network Class
 Parameters:
-layer_s - Array or Int. If an array is passed it will built a network with the desired layers in the array. If an Int is passed it will build a network only consisting of an input node layer.
-act_function - Default Sigmoid. If the user has a preference on the activation function it will use the given activation function for each layer of the network. 
-a - Default None. If the activation function requires an a value like RPeLU Or ELU you can pass the a value in initations.
+* layer_s - Array or Int. If an array is passed it will built a network with the desired layers in the array. If an Int is passed it will build a network only consisting of an input node layer.
+* act_function - Default Sigmoid. If the user has a preference on the activation function it will use the given activation function for each layer of the network. 
+* a - Default None. If the activation function requires an a value like RPeLU Or ELU you can pass the a value in initations.
 
 ## Built With
 * [NumPy](http://www.numpy.org/) - The maths framework used
