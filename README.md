@@ -101,7 +101,7 @@ network = Network([3, 4, 2], "Tanh")
   Network.add_layer(4, "RPeLU", 5)
   Network.add_layer(2, "ArcTan")
 ```
-This creates a network [3, 4, 2] Network with differnt activation function for each layer this allows the user to have more control over the network and can work with different combinations to achieve different results.
+This creates a [3, 4, 2] Network with differnt activation function for each layer this allows the user to have more control over the network and can work with different combinations to achieve different results.
 
 
 ## P.S.
