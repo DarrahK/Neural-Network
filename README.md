@@ -22,14 +22,22 @@ Parameters:
 * act_function - Default Sigmoid. If the user has a preference on the activation function it will use the given activation function for each layer of the network. 
 * a - Default None. If the activation function requires an a value like RPeLU Or ELU you can pass the a value in initations.
 
+### Examples of Initiations of a Network.
+
+```
+  # Initiations using an array to build a Neural network using Tanh as the activation function.
+  network = Network([3, 4, 2], "Tanh")
+```
+
+```
+  # Initiations using an int to build a Neural network with only the input node layer.
+  network = Network(3)
+```
+
 ## Built With
 * [NumPy](http://www.numpy.org/) - The maths framework used
 
-### Examples of building a Network.
 
-```
-  network = Network([3, 4, 2])
-```
 
 ## More customisation of the network.
 ### Modular Network
