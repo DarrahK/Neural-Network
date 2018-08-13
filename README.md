@@ -95,13 +95,13 @@ network = Network([3, 4, 2])
 network = Network([3, 4, 2], "Tanh")
 ```
 
-### Modular Network
+### Modular
 ```
   Network = Network(3)
   Network.add_layer(4, "RPeLU", 5)
   Network.add_layer(2, "ArcTan")
 ```
-This creates a network with 3 inputs, 1 hidden layer of with 4 nodes, and 2 output nodes with differnt activation function for each layer this allows the user to have more control over the network and can work with different combinations to achieve different results.
+This creates a network [3, 4, 2] Network with differnt activation function for each layer this allows the user to have more control over the network and can work with different combinations to achieve different results.
 
 
 ## P.S.
