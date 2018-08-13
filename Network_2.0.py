@@ -34,8 +34,8 @@ class Network:
         self.weights.append(np.random.randn(nodes, self.layers[-1]))
         self.layers.append(nodes)
 
-    def change_input_layers(self, numbers_of_inputs):
-        self.layers[0] = numbers_of_inputs
+    def change_layer(self, layer, numbers_of_nodes):
+        self.layers[layer] = numbers_of_nodes
 
     def feed_forward(self, input_data, output=False):
         # Clearing all the data so it can be used for feeding forward.
@@ -199,7 +199,7 @@ def function_map(function_name, x, prime=False, a=None):
     "ArcTan": arctan(x, prime),
     "ID": id(x, prime),
     "RPeLU": rpelu(x, a, prime),
-    "ELU":elu(x, a, prime),
+    "ELU": elu(x, a, prime),
     "SolfPlus": solfplus(x, prime)
     }
     return functions[function_name]
