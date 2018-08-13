@@ -83,8 +83,15 @@ network.back_prop([1, 1, 1], [1, 0])
 ## Built With
 * [NumPy](http://www.numpy.org/) - The maths framework used
 
-### Activation functions:
-
+## Activation functions:
+* [Sigmoid](https://en.wikipedia.org/wiki/Sigmoid_function)
+* [Tanh](http://reference.wolfram.com/language/ref/Tanh.html)
+* [RelU](https://en.wikipedia.org/wiki/Rectifier_(neural_networks))
+* [AcrTan](http://reference.wolfram.com/language/ref/ArcTan.html)
+* [ID](https://en.wikipedia.org/wiki/Identity_function)
+* [RPeLU](https://github.com/Kulbear/deep-learning-nano-foundation/wiki/ReLU-and-Softmax-Activation-Functions)
+* [ELU](https://sefiks.com/2018/01/02/elu-as-a-neural-networks-activation-function/)
+* [SolfPlus](https://sefiks.com/2017/08/11/softplus-as-a-neural-networks-activation-function/)
 
 ## Example of building Networks
 ### Linearly 
