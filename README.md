@@ -41,7 +41,18 @@ Parameters:
     * activations - type string: Default "Sigmoid". The activation function to be associated with that layer.
     * a - type int: Default None. If the activation function requires an a value like RPeLU Or ELU.
   * Functionality:
-    This function adds an another layer to the Neural Network with thee activation function specified.
+    This method adds an another layer to the Neural Network with thee activation function specified.
+```
+  # This will add another layer with 3 nodes to the Network with the default Sigmoid activation function.
+  network.add_layer(3)
+  # This will add another layer with 4 nodes to the Network with the RPeLU activation function.
+  network.add_layer(4, "RPelU", 0.3)
+```
+* change_input_layers
+  * Parrameters:
+    * Nodes - type int. 
+  * Functionality:
+    This method changes how many
 ```
   # This will add another layer with 3 nodes to the Network with the default Sigmoid activation function.
   network.add_layer(3)
