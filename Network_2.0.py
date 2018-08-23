@@ -210,13 +210,3 @@ def list_of_same(item, number):
     for i in range(number):
         list.append(item)
     return list
-
-
-if __name__ == "__main__":
-    # This will be used for testing only
-    A = Network([3,4,2])
-    #print(A.weights)
-    #print(A.biases)
-    A = Network([3,4,2])
-    print(A.feed_forward([1,1,1], True))
-    print(A.nodes)
