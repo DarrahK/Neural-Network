@@ -35,19 +35,20 @@ class Network:
         self.layers.append(nodes)
 
     def change_layer(self, layer, numbers_of_nodes):
+        # This changes the numbers of nodes of a layer starting at 0.
         self.layers[layer] = numbers_of_nodes
 
     def feed_forward(self, input_data, output=False):
         # Clearing all the data so it can be used for feeding forward.
-        #  I need to fix the a activation things
         self.a_data = []
         self.nodes = []
         # We need the zs to be stored so we can use it in back propagation.
         self.zs = []
         # Setting the input list to a numpy matrix array.
         input_transpose = np.matrix(input_data).transpose()
+        # Checking if we are able to feedforard.
         if np.size(input_transpose) > self.layers[0]:
-            return "You have too many inpuuts"
+            return "You have too many inputs"
         # Feeding the transposed input in the nodes list.
         self.nodes.append(input_transpose)
         # Feeding the data through the neural network.
@@ -59,7 +60,7 @@ class Network:
             zs = np.add(np.dot(weight, node), biase)
             # Saving the zs data in self.zs.
             self.zs.append(zs)
-            # Gathering the a data( if needed )
+            # Gathering the a data ( if needed )
             a = self.a_activation[layer]
             # Applying the activation function mapping
             act_funct = self.activations[layer]
@@ -67,7 +68,7 @@ class Network:
             self.nodes.append(new_node)
         # If the users wants an output.
         if output:
-            # Outputs the last layer of the network.
+            # Outputs the last layer of the network if set to True.
             return new_node
 
     def back_prop(self, x, y, update=False):
@@ -86,7 +87,7 @@ class Network:
         nodes_2 = np.matrix(self.nodes[-2])
         weights_copy[-1] = np.dot(delta, nodes_2.transpose())
         # Applying back propagation to the rest of the nodes.
-        for back in range(1, self.layers - 1):
+        for back in range(1, len(self.layers) - 1):
             weight = np.matrix(self.weights[-back])
             act_funct = self.activations[-back-1]
             a_data = self.a_activation[-back-1]
@@ -185,8 +186,8 @@ def solfplus(x, prime=False):
 
 def cost(output, correct_data, prime=False):
     if prime:
-        return 2 * np.subtract(output, correct_data)
-    return np.sum(np.square(np.subtract(output, correct_data)))
+        return 2 * np.subtract(correct_data, output)
+    return np.sum(np.square(np.subtract(correct_data, output)))
 
 
 # This is used to have function mapping of the activation functions.
