@@ -207,7 +207,4 @@ def function_map(function_name, x, prime=False, a=None):
 
 
 def list_of_same(item, number):
-    list = []
-    for i in range(number):
-        list.append(item)
-    return list
+    return [item for item in range(number)]
