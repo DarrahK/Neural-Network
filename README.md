@@ -1,4 +1,4 @@
-# neural-network-2.0
+# neural-network-2.0 --- NOT FINISHED
 My motivation was to allow beginners to machine learning to have an application that they can use to learn and experiment with. Where the user can create, train, and run a network in a couple of lines. Whilst offering more advance options like modularity and customization over activation function on different layers. To come up with new and innovative solutions to solve real problems.
  
 ## Creating a Neural Network
