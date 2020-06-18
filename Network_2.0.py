@@ -1,6 +1,11 @@
-# --- Neural Network v2.0 ---
+# --- Neural Network v3.0 ---
 # This is an improved Neural network package.
 
+# Local imports 
+from activation_functions import *
+from cost_functions import *
+
+# External Imports 
 import numpy as np
 
 
@@ -9,202 +14,191 @@ class Network:
 
     """
 
-    def __init__(self, layer_s, act_funct="Sigmoid", a=None):
+    def __init__(self, layer_s, act_func = "Sigmoid", a_const = None):                             # I could add a seed options
+
+        self.zs          = []
+        self.activations = []
+
         if type(layer_s) is int:
-            # we can create a network slowly by modality.
-            self.biases = []
-            self.weights = []
-            self.activations = []
-            self.layers = [layer_s]
+            # Allows the network to be build by modality.
+            self.layers       = [layer_s]
+            self.size         = 1
+            self.activations  = []
             self.a_activation = []
-
-        # We can make a network faster if they don't want control.
+            self.biases       = []
+            self.weights      = []
         else:
-            self.layers = layer_s
-            self.size = len(layer_s)
-            self.activations = list_of_same(act_funct, self.size - 1)
-            self.biases = [np.random.randn(x, 1) for x in layer_s[1:]]
-            self.weights = [np.random.randn(x, y) for x, y in zip(layer_s[1:], layer_s[:-1])]
-            self.a_activation = list_of_same(a, self.size - 1)
+            self.layers       = layer_s
+            self.size         = len(layer_s)
+            self.activations  = [act_func for _ in range(self.size - 1)]
+            self.a_activation = [a_const for _ in range(self.size - 1)]
+            self.biases       = [np.random.randn(x, 1) for x in layer_s[1:]]
+            self.weights      = [np.random.randn(y, x) for x, y in zip(layer_s[:-1], layer_s[1:])]
 
-    def add_layer(self, nodes, activation="Sigmoid", a=None):
-        self.a_activation.append(a)
-        self.activations.append(activation)
-        self.biases.append(np.random.randn(nodes, 1))
-        self.weights.append(np.random.randn(nodes, self.layers[-1]))
+    def add_layer(self, num_of_nodes, act_func = "Sigmoid", a_const = None):
+
         self.layers.append(nodes)
+        self.size += 1
+        self.activations.append(activation)
+        self.a_activation.append(a_const)
+        self.biases.append(np.random.randn(num_of_nodes, 1))
+        self.weights.append(np.random.randn(num_of_nodes, self.layers[-1]))
 
-    def change_layer(self, layer, numbers_of_nodes):
-        # This changes the numbers of nodes of a layer starting at 0.
-        self.layers[layer] = numbers_of_nodes
+    def change_layer(self, layer, num_of_nodes):
 
-    def feed_forward(self, input_data, output=False):
-        # Clearing all the data so it can be used for feeding forward.
-        self.a_data = []
-        self.nodes = []
-        # We need the zs to be stored so we can use it in back propagation.
-        self.zs = []
+        self.layers[layer]  = num_of_nodes
+        self.biases[layer]  = np.random.randn(num_of_nodes, 1)
+
+        if (layer != size):
+            self.weights[layer] = np.random.randn(num_of_nodes, self.layers[layer + 1])
+
+    def feed_forward(self, input_data):                                                 # Removed output = False
+
+        # A little check if to make sure that the the the right way
+        # input_data = np.matrix(input_data).transpose()
         # Setting the input list to a numpy matrix array.
-        input_transpose = np.matrix(input_data).transpose()
-        # Checking if we are able to feedforard.
-        if np.size(input_transpose) > self.layers[0]:
-            return "You have too many inputs"
-        # Feeding the transposed input in the nodes list.
-        self.nodes.append(input_transpose)
-        # Feeding the data through the neural network.
-        for layer in range(len(self.layers) - 1):
-            # defining the weight and node for that layer.
-            weight = self.weights[layer]
-            node = self.nodes[layer]
-            biase = self.biases[layer]
-            zs = np.add(np.dot(weight, node), biase)
-            # Saving the zs data in self.zs.
-            self.zs.append(zs)
-            # Gathering the a data ( if needed )
-            a = self.a_activation[layer]
-            # Applying the activation function mapping
-            act_funct = self.activations[layer]
-            new_node = function_map(act_funct, zs, a)
-            self.nodes.append(new_node)
-        # If the users wants an output.
-        if output:
-            # Outputs the last layer of the network if set to True.
-            return new_node
 
-    def back_prop(self, x, y, update=False):
-        # Feeding the data forward so we can calculate back propagation using the correct values.
-        self.feed_forward(x)
-        # Working out the first propagation.
-        y_tran = np.matrix(y).transpose()
-        act_funct = self.activations[-1]
-        a_data = self.a_activation[-1]
-        delta = np.multiply(cost(self.nodes[-1], y_tran, True), function_map(act_funct, self.zs[-1], a_data, True))
-        # Makes a copy of the networks biases and weights.
-        biases_copy = [np.zeros(b.shape) for b in self.biases]
-        weights_copy = [np.zeros(w.shape) for w in self.weights]
-        biases_copy[-1] = delta
-        # Making sure that the data is a NumPy matrix
-        nodes_2 = np.matrix(self.nodes[-2])
-        weights_copy[-1] = np.dot(delta, nodes_2.transpose())
-        # Applying back propagation to the rest of the nodes.
-        for back in range(1, len(self.layers) - 1):
-            weight = np.matrix(self.weights[-back])
-            act_funct = self.activations[-back-1]
-            a_data = self.a_activation[-back-1]
-            delta = np.multiply(np.dot(weight.transpose(), delta), function_map(act_funct,self.zs[-back-1], a_data, True))
-            biases_copy[-back-1] = delta
-            nodes = np.matrix(self.nodes[-back-2])
-            weights_copy[-back-1] = np.dot(delta, nodes.transpose())
-        # This updated the self.biases and self.weights to the new corrections.
+        # The code is not easy to read i.e change the input_data stuff 
+
+        # Checking if we are able to feedforward.
+        #if np.size(input_data) > self.layers[0]:
+        #    return "You have too many inputs"
+
+        self.zs          = []
+        self.activations = []
+
+        self.activations.append(input_data)
+
+        # Feeding the data through the neural network.
+        for layer in range(self.size - 1):
+
+            # activation = W*x + b
+            weight = self.weights[layer]
+            bias = self.biases[layer]
+            zs = np.add(np.dot(weight, input_data), bias)
+
+            self.zs.append(zs)
+
+            # Gathering the a data ( if needed )
+            a_const = self.a_activation[layer]
+
+            # Applying the activation function mapping
+            activation_function = self.activations[layer]
+            input_data = function_map(activation_function, zs, False, a_const)
+            self.activations.append(input_data)
+
+        return input_data
+
+    def back_propagation(self, input_data, y, update = False, learning_rate = 0.05):
+        
+        # Maybe I should have it so my output is called gradient weights or something
+        # Do I want to change that 
+        # This only works with sigmoid ATM
+
+        biases_gradient  = [np.zeros(b.shape) for b in self.biases]
+        weights_gradient = [np.zeros(w.shape) for w in self.weights]
+
+        # for the feed_forward i will need to have need have the 
+        #print("input", input)
+
+
+        predicted_output = self.feed_forward(input_data)
+        
+        # I just need to check that my cost function is correct
+        # check over that delta is correct
+        evaluated_cost = cost(predicted_output, y, prime = True)
+        delta = np.multiply(evaluated_cost, predicted_output)
+
+
+        biases_gradient[-1] = delta
+        weights_gradient[-1] = np.dot(delta, self.activations[-2].transpose())
+
+        for layer in range(2, self.size):
+
+            z = self.zs[-layer]
+            # This needs to be changed so it workes with the correct activation function
+            activation_prime = sigmoid(z, True)
+            delta = np.multiply(np.dot(self.weights[-layer+1].transpose(), delta), activation_prime)
+            biases_gradient[-layer] = delta
+            weights_copy[-layer] = np.dot(delta, self.activations[-layer-1].transpose())
+
         if update:
-            self.biases = np.add(self.biases, biases_copy)
-            self.weights = np.add(self.biases, weights_copy)
-        else:
-            return biases_copy, weights_copy
+            self.weights = [w - learning_rate * w_change for w, w_change in zip(self.weights, weights_gradient)]
+            self.biases  = [b - learning_rate * b_change for b, b_change in zip(self.biases, biases_gradient)]
+
+        return (weights_gradient, biases_gradient)
+
+    def SGD(self, data, epochs = 1, learning_rate = 0.05, training_data = None):
+
+        for epoch in range(epochs):
+            # data is a tuple,
+            # I need to suffle the data
+            for (input, actual_output) in data:
+                self.back_propagation(input, actual_output, True, learning_rate)
+
+            if training_data:
+                print(f"Epoch: {epoch+1} / {epochs}, actuary {self.score(training_data)}")
+            else:
+                print(f"Epoch: {epoch+1} / {epochs}")
+
+
+    def mini_batch_SGD(self, data, epochs = 1, num_batchs = 4, learning_rate  = 0.05, training_data = None):
+
+        data_length = len(data)
+        batch_size  = int(data_length / num_batchs)
+
+        for epoch in range(epochs):
+            # data is a tuple
+            # I need to suffle the data
+            for i in range(num_batchs):
+                b_copy = [np.zeros(b.shape) for b in self.biases]
+                w_copy = [np.zeros(w.shape) for w in self.weights]
+
+                for (input, actual_output) in data[i*batch_size:(i+1)*batch_size]:
+                    (nabla_w, nabla_b) = self.back_propagation(input, actual_output, learning_rate = learning_rate)
+                    w_copy = [w - (learning_rate / batch_size) * w_change for w, w_change in zip(w_copy, nabla_w)]   
+                    b_copy = [b - (learning_rate / batch_size) * b_change for b, b_change in zip(w_copy, nabla_b)]
+
+            if training_data:
+                print(f"Epoch: {epoch+1} / {epochs}, Batch: {i+1} / {num_batchs}, actuary {self.score(training_data)}")
+            else:
+                print(f"Epoch: {epoch+1} / {epochs}, Batch: {i+1} / {num_batchs}")
+
+    def score(self, training_data):
+
+        # that is not how you spell it so pleeseeee change it..................................................
+        actuary = 0
+        training_length = len(training_data)
+
+        for (input, actual_output) in training_data:
+            output  = self.feed_forward(input)
+            actuary += np.dot(output.transpose(),actual_output) / self.layers[-1] 
+
+        return actuary / training_length
 
     def __str__(self):
         return str(self.layers)
 
     def __len__(self):
-        return len(self.layers)
-
-# Functions that will be used as the activations.
-# Indexing might be a way that I can make it better.
-
-def sigmoid(x, prime=False):
-    if prime:
-        return np.multiply(sigmoid(x), (1-sigmoid(x)))
-    return 1 / (1 + np.exp(-x))
+        return self.size
 
 
-def tanh(x, prime=False):
-    if prime:
-        # does this work
-        return 1 - np.square(np.tanh(x))
-    return np.tanh(x)
+if __name__ == "__main__":
+    network = Network([3,4,2])
+    #print(network.weights)
+    input = np.array([[1], [1], [1]])
+    output = np.array([[1], [1]])
+    #print(" input: ", input)
+    #output = network.feed_forward(input)
+    #print(output)
+
+    network.back_propagation(input, output, True)
+    network.SGD([(input,output)], 2 , 0.05, [(input,output)])
 
 
-def relu(x, prime=False):
-    if prime:
-        x[x >= 0] = 1
-        x[x < 0] = 0
-        return x
-    x[x < 0] = 0
-    return x
 
 
-def id(x, prime=False):
-    # Does this work?
-    if prime:
-        x = np.ones((x.shape[0],x.shape[1]))
-        return x
-    return x
 
 
-def arctan(x, prime=False):
-    if prime:
-        return 1 / (np.square(x) + 1)
-    return np.arctan(x)
 
 
-def rpelu(x, a, prime=False):
-    if prime:
-        x[x >= 0] = 1
-        x[x < 0] = a
-        return x
-    # I need to find a way to make this better.
-    # However this works because it is a n by 1 matrix.
-    for i in range(x.shape[0]):
-        if x[i] < 0:
-            x[i] *= a
-    return x
-
-
-def elu(x, a, prime=False):
-    if prime:
-        x[x >= 0] = 1
-        # I need to find a way to make this better.
-        #x[x < 0] = ELU(x, a) + a
-        for i in range(x.shape[0]):
-            if x[i] < 0:
-                x[i] = elu(x[i], a) + a
-        return x
-    # x[x < 0] = a * ( np.exp(x) - 1)
-    for i in range(x.shape[0]):
-        if x[i] < 0:
-            x[i] = a * (np.exp(x[i]) - 1)
-    return x
-
-
-def solfplus(x, prime=False):
-    if prime:
-        return sigmoid(x)
-    return np.log(1 + np.exp(x))
-
-# Cost analysis.
-
-
-def cost(output, correct_data, prime=False):
-    if prime:
-        return 2 * np.subtract(correct_data, output)
-    return np.sum(np.square(np.subtract(correct_data, output)))
-
-
-# This is used to have function mapping of the activation functions.
-
-def function_map(function_name, x, prime=False, a=None):
-    functions = {
-    "Sigmoid": sigmoid(x, prime),
-    "Tanh": tanh(x, prime),
-    "RelU": relu(x, prime),
-    "ArcTan": arctan(x, prime),
-    "ID": id(x, prime),
-    "RPeLU": rpelu(x, a, prime),
-    "ELU": elu(x, a, prime),
-    "SolfPlus": solfplus(x, prime)
-    }
-    return functions[function_name]
-
-
-def list_of_same(item, number):
-    return [item for item in range(number)]
