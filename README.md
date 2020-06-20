@@ -206,7 +206,7 @@ Here is a list of all the activation functions that are already built-in and lin
 * [SolfPlus](https://sefiks.com/2017/08/11/softplus-as-a-neural-networks-activation-function/)
 
 ## Cost function
-Here is a list of all the cost functions that are already built-in and links to understand what each of them do. You are able to add an activation function in the `.cost_functions.py` file, just make sure you add [ADD STUFF].
+Here is a list of all the cost functions that are already built-in and links to understand what each of them do. You are able to add an activation function in the `.cost_functions.py` file.
 
 * [Quadratic Loss Function](https://en.wikipedia.org/wiki/Loss_function#Quadratic_loss_function)
 
