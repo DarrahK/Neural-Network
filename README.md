@@ -272,13 +272,22 @@ network = Network([3, 4, 2], "Tanh")
 
 ### Modular
 
-```
+```python
 Network = Network(3)
 Network.add_layer(4, "RPeLU", 5)
 Network.add_layer(2, "ArcTan")
 ```
 
 This creates a [3, 4, 2] network with differnt activation function for each layer, allowing the user to have more control over the network. This can work with different combinations to achieve different results.
+  
+### Example of Building, Training And Saving
+
+```python
+network = Network([3,4,2])
+training_data = load_data("taining_data.csv", 3)
+network.SGD( training_data, 10, 0.01)
+save("network.obj", network)
+```  
   
 ## Dependency
 
