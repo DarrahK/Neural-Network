@@ -6,6 +6,6 @@ import numpy as np
 
 def cost(output, correct_data, prime = False):
     if prime:
-        return np.subtract(correct_data, output)
-    return np.sum(np.square(np.subtract(correct_data, output))) /2
+    	return np.subtract(output, correct_data)
+    return np.sum(np.square(np.subtract(output, correct_data))) / 2
 
