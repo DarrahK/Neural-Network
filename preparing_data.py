@@ -2,8 +2,6 @@
 import numpy as np
 import csv
 
-# This will only work for CV
-
 def load_data(file_name, num_of_inputs):
 
 	with open(file_name) as csv_file:

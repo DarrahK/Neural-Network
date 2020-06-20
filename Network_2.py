@@ -13,10 +13,10 @@ import random
 
 class Network:
 
-    def __init__(self, layer_s, act_func = "Sigmoid", a_const = None): 
+    def __init__(self, layer_s, act_func = "Sigmoid", a_const = 0.1): 
 
         self.zs          = []
-        self.activations = []
+        self.activations_values = []
 
         if type(layer_s) is int:
             # Allows the network to be build by modality.
@@ -68,10 +68,11 @@ class Network:
 
     def feed_forward(self, input_data):                      
 
-        self.zs          = []
-        self.activations = []
+        self.zs                 = []
+        self.activations_values = []
 
         self.activations.append(input_data)
+
 
         for layer in range(self.size - 1):
 
@@ -86,7 +87,7 @@ class Network:
             activation_function = self.activations[layer]
 
             input_data = function_map(activation_function, zs, False, a_const)
-            self.activations.append(input_data)
+            self.activations_values.append(input_data)
 
         return input_data
 
@@ -98,11 +99,15 @@ class Network:
         predicted_output = self.feed_forward(input_data)
         
         evaluated_cost = cost(predicted_output, y, prime = True)
-        # TODO: I need to make sure this works with other functions
-        delta = np.multiply(evaluated_cost, sigmoid(self.zs[-1], True))
+
+        a_const = self.a_activation[layer]
+        activation_function = self.activations[layer]      
+        prime_value = function_map(activation_function, zs, True, a_const)
+
+        delta = np.multiply(evaluated_cost, prime_value)
 
         biases_gradient[-1]  = delta
-        weights_gradient[-1] = np.dot(delta, self.activations[-2].transpose())
+        weights_gradient[-1] = np.dot(delta, self.activations_values[-2].transpose())
 
         for layer in range(2, self.size):
 
@@ -113,7 +118,7 @@ class Network:
 
             delta = np.multiply(np.dot(self.weights[-layer+1].transpose(), delta), activation_prime)
             biases_gradient[-layer] = delta
-            weights_gradient[-layer] = np.dot(delta, self.activations[-layer-1].transpose())
+            weights_gradient[-layer] = np.dot(delta, self.activations_values[-layer-1].transpose())
 
         if update:
             self.weights = [w - learning_rate * w_change for w, w_change in zip(self.weights, weights_gradient)]

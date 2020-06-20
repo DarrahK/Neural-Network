@@ -6,26 +6,24 @@ import numpy as np
 # If you want to add another function please add it into the dictorionary inside the function_map.
  
 
-def function_map(function_name, x, prime = False, a = None):
+def function_map(function_name, x, prime = False, a = 1.0):
     functions = {
-    "Sigmoid": sigmoid(x, prime)
-    }
-
-    return sigmoid(x, prime)
-    '''
-        "RPeLU": rpelu(x, a, prime),   
+    "Sigmoid": sigmoid(x, prime),
+    "RPeLU": rpelu(x, a, prime),   
     "Tanh": tanh(x, prime),
     "RelU": relu(x, prime),
     "ArcTan": arctan(x, prime),
     "ID": id(x, prime),
     "ELU": elu(x, a, prime),
-    "SolfPlus": solfplus(x, prime) '''
+    "SolfPlus": solfplus(x, prime)
+    }
+    return functions[function_name]
     
  # Activation functions
 
 def sigmoid(x, prime = False):
     if prime:
-       	return np.multiply(sigmoid(x), (1-sigmoid(x)))
+       	return np.multiply(sigmoid(x), (1 - sigmoid(x)))
     return 1 / (1 + np.exp(-x))
 
 def tanh(x, prime = False):
@@ -58,20 +56,22 @@ def rpelu(x, a, prime = False):
         x[x < 0] = a
         return x
     for i in range(x.shape[0]):
-        if x[i] < 0:
-            x[i] *= a
+        if x[i][0] < 0:
+            x[i][0] = np.multiply(np.arange(a, dtype=np.float)[0], x[i][0])
     return x
 
 def elu(x, a, prime = False):
     if prime:
         x[x >= 0] = 1
+
         for i in range(x.shape[0]):
-            if x[i] < 0:
-                x[i] = elu(x[i], a) + a
+            if x[i][0] < 0:
+                x[i][0] = elu(x[i][0], np.arange(a, dtype=np.float)[0]) + np.arange(a, dtype=np.float)[0]
         return x
+
     for i in range(x.shape[0]):
-        if x[i] < 0:
-            x[i] = a * (np.exp(x[i]) - 1)
+        if x[i][0] < 0:
+            x[i][0] = np.arange(a, dtype=np.float)[0] * (np.exp(x[i][0]) - 1)
     return x
 
 def solfplus(x, prime = False):
