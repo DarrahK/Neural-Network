@@ -297,4 +297,4 @@ save("network.obj", network)
 
 The aim of project was for me to have an introduction to Python, Git, OOP, and machine learning. I followed the book [Neural Networks and Deep Learning](http://neuralnetworksanddeeplearning.com) closely through the project, learning the Mathematics of machine learning along the way.
 
-If there is any problems will the code, please message me :) 
+If there is any problems with the code, please message me :) 
